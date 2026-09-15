@@ -60,6 +60,7 @@ python eda.py                 # exploratory analysis
 python scorecard.py           # builds WOE/IV scorecard, predicts on test
 python sql_exploration.py     # SQL-based feature analysis
 python models.py              # Logistic Regression / Random Forest / XGBoost comparison
+python model_validation.py
 ```
 
 ## Methodology
@@ -89,4 +90,3 @@ python models.py              # Logistic Regression / Random Forest / XGBoost co
 ├── top_10_riskiest_segments.csv # output: SQL query - riskiest grade/ownership combos
 ├── requirements.txt
 └── README.md
-
