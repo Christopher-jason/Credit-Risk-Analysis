@@ -1,0 +1,13 @@
+income_bracket,person_home_ownership,total_loans,default_rate_pct
+High Income,RENT,5822,11.01
+High Income,OTHER,32,9.38
+High Income,MORTGAGE,11445,4.05
+High Income,OWN,678,0.44
+Low Income,OTHER,7,57.14
+Low Income,RENT,2731,39.18
+Low Income,MORTGAGE,322,13.35
+Low Income,OWN,404,5.45
+Mid Income,RENT,22041,23.13
+Mid Income,OTHER,50,16.0
+Mid Income,MORTGAGE,13057,7.47
+Mid Income,OWN,2056,0.88
