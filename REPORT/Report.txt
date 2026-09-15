@@ -1,0 +1,87 @@
+CREDIT RISK MODEL: BUSINESS SUMMARY
+Probability of Default (PD) Model — Loan Portfolio
+
+
+1. PURPOSE
+
+This model estimates the Probability of Default (PD) for loan applicants,
+using historical loan data to identify which applicant and loan
+characteristics are associated with higher default risk.
+
+
+2. THE DATA
+
+- 58,645 historical loan applications, no missing data
+- Overall default rate: 14.24%
+
+[insert fig: loan_status_distribution.png]
+
+
+3. WHAT DRIVES DEFAULT RISK
+
+Loan grade is the strongest predictor of default:
+  - Grade A: ~4.9%  |  Grade G: ~81.8%
+
+Home ownership is the second-strongest signal:
+  - Renters: ~22.3%  |  Mortgage: ~6.0%  |  Own outright: ~1.4%
+
+[insert fig: boxplots_vs_status.png]
+(Interest rate, loan % of income, income, and age compared across
+defaulted vs non-defaulted borrowers)
+
+[insert fig: correlation_heatmap.png]
+(Shows how numeric features relate to each other and to default status)
+
+
+4. MODEL PERFORMANCE
+
+Logistic Regression (validated on a held-out 20% split):
+  Accuracy: 84.53%  |  ROC-AUC: 0.9068
+
+[insert fig: logreg_confusion_matrix.png]
+
+Random Forest:
+  [insert your accuracy/F1 numbers here]
+
+[insert fig: rf_confusion_and_importance.png]
+
+XGBoost:
+  [insert your accuracy/F1 numbers here]
+
+[insert fig: xgb_confusion_and_importance.png]
+
+Credit Scorecard (WOE/IV points-based model):
+  Predicted default rate on test set: 25.89%
+  Fully interpretable — every point value is explainable, unlike the
+  tree-based models above.
+
+
+5. MODEL VALIDATION
+
+Population Stability Index (PSI): [insert your PSI score]
+
+[insert fig: psi_distribution.png]
+(Compares the population the model trained on vs. the test population
+it's being applied to)
+
+Calibration:
+
+[insert fig: calibration_curve.png]
+(Checks whether predicted probabilities match real-world default rates,
+not just whether risk ranking is correct)
+
+
+6. RECOMMENDATION
+
+The scorecard model is recommended for any decision that must be
+explained to an applicant or regulator. Tree-based models may offer a
+modest accuracy edge but sacrifice transparency.
+
+
+7. LIMITATIONS
+
+- Trained on a single historical snapshot; would need retraining if
+  the applicant population shifts over time (see PSI above)
+- Two erroneous data entries (age/employment length = 123) were
+  identified and corrected via median imputation
+- Not yet tested for fairness/bias across protected characteristics

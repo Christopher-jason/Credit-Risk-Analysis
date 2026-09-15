@@ -106,3 +106,22 @@ calibration_table = pd.DataFrame({
 })
 print("\nCalibration table:")
 print(calibration_table.to_string(index=False))
+
+
+
+
+
+# PSI distribution chart - add after psi_table is built
+fig, ax = plt.subplots(figsize=(9, 5))
+x = range(len(psi_table))
+ax.bar([i - 0.2 for i in x], psi_table['expected_pct'], width=0.4, label='Train (expected)')
+ax.bar([i + 0.2 for i in x], psi_table['actual_pct'], width=0.4, label='Test (actual)')
+ax.set_xticks(list(x))
+ax.set_xticklabels(psi_table['bucket'], rotation=45, ha='right')
+ax.set_ylabel('% of population')
+ax.set_title(f'Population Stability - Train vs Test (PSI = {psi_score:.4f})')
+ax.legend()
+plt.tight_layout()
+plt.savefig('psi_distribution.png', dpi=150, bbox_inches='tight')
+plt.show()
+
