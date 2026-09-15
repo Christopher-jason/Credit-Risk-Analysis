@@ -1,0 +1,471 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Credit Risk Model — Business Summary</title>
+<style>
+@page { size: Letter; margin: 18mm 16mm 16mm 16mm; }
+* { box-sizing: border-box; }
+body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color:#1c2430;
+       font-size: 10.2pt; line-height: 1.52; margin:0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+h1 { font-size: 20pt; margin:0 0 2px; letter-spacing:-.4px; color:#0f2038; font-weight:700; }
+.sub { font-size: 11.5pt; color:#4a5b73; }
+h2 { font-size: 12.6pt; color:#0f2038; margin: 22px 0 8px; padding-bottom:5px;
+     border-bottom: 2px solid #0f2038; letter-spacing:.2px; text-transform:uppercase; font-weight:700; }
+h3 { font-size: 10.8pt; color:#20334d; margin: 15px 0 5px; font-weight:700; }
+h2, h3 { page-break-after: avoid; break-after: avoid-page; }
+p, li { orphans: 2; widows: 2; }
+tr { page-break-inside: avoid; break-inside: avoid; }
+thead { display: table-header-group; }
+p { margin: 0 0 8px; }
+ul { margin: 0 0 9px; padding-left: 17px; }
+li { margin-bottom: 3px; }
+.meta { border-top:3px solid #0f2038; border-bottom:1px solid #c9d2de; padding:9px 0 10px; margin-bottom:6px;
+        display:flex; flex-wrap:wrap; gap:0 26px; font-size:8.7pt; color:#54637a; }
+.meta b { color:#1c2430; font-weight:600; }
+.box { background:#f2f6fb; border-left:4px solid #1d4e89; padding:11px 14px; margin:12px 0 14px; border-radius:0 3px 3px 0; }
+.box h3 { margin-top:0; color:#1d4e89; }
+.warn { background:#fdf4f1; border-left-color:#b4472e; }
+.warn h3 { color:#a33f27; }
+.good { background:#f0f7f2; border-left-color:#2e7d4f; }
+.good h3 { color:#256b42; }
+table { border-collapse: collapse; width:100%; margin: 9px 0 12px; font-size: 8.9pt; }
+th { background:#0f2038; color:#fff; text-align:left; padding:6px 8px; font-weight:600; font-size:8.3pt;
+     letter-spacing:.3px; text-transform:uppercase; }
+td { padding:5px 8px; border-bottom:1px solid #dde4ec; }
+tr:nth-child(even) td { background:#f7f9fc; }
+td.n, th.n { text-align:right; font-variant-numeric: tabular-nums; }
+tr.tot td { font-weight:700; background:#e8edf4 !important; border-top:2px solid #0f2038; }
+tr.hl td { background:#fdf0ec !important; }
+tr.hl2 td { background:#eef6f0 !important; }
+figure { margin: 12px 0 16px; page-break-inside: avoid; break-inside: avoid; text-align:center; }
+figure img { max-width:100%; border:1px solid #d6dde6; border-radius:2px; }
+figcaption { font-size:8.4pt; color:#5b6a80; margin-top:6px; text-align:left; line-height:1.4; }
+figcaption b { color:#1c2430; }
+.sec { page-break-inside: auto; }
+.nobreak { page-break-inside: avoid; break-inside: avoid; }
+.pb { page-break-before: always; }
+.small { font-size:8.5pt; color:#5b6a80; }
+.foot { margin-top:22px; padding-top:9px; border-top:1px solid #c9d2de; font-size:8pt; color:#6c7a8f; }
+code { font-family: "SF Mono", Menlo, monospace; font-size:8.6pt; background:#eef2f7; padding:1px 4px; border-radius:2px; }
+.kpi { display:flex; gap:9px; margin:12px 0 15px; }
+.kpi div { flex:1; border:1px solid #d6dde6; border-top:3px solid #1d4e89; padding:8px 10px; border-radius:0 0 3px 3px; }
+.kpi .v { font-size:15pt; font-weight:700; color:#0f2038; letter-spacing:-.5px; }
+.kpi .l { font-size:7.5pt; white-space:nowrap; color:#5b6a80; text-transform:uppercase; letter-spacing:.4px; margin-top:1px; }
+</style></head><body>
+
+<h1>Credit Risk Model: Business Summary</h1>
+<div class="sub" style="font-size:11.5pt;color:#4a5b73;margin-bottom:9px;">Probability of Default (PD) Model &mdash; Loan Portfolio</div>
+<div class="meta">
+  <span><b>Prepared by:</b> Christopher Jason Sagayaraj, Credit Risk Analysis</span>
+  <span><b>Date:</b> 15 September 2026</span>
+  <span><b>Status:</b> Internal review draft</span>
+  <span><b>Sample:</b> 58,645 applications</span>
+</div>
+
+<div class="kpi">
+  <div><div class="v">14.24%</div><div class="l">Default rate</div></div>
+  <div><div class="v">0.9554</div><div class="l">Best model ROC-AUC</div></div>
+  <div><div class="v">0.0008</div><div class="l">PSI (train vs test)</div></div>
+  <div><div class="v">$93.5M</div><div class="l">Principal in default</div></div>
+</div>
+
+<div class="box"><h3>Bottom line</h3>
+<p style="margin-bottom:6px;">Four models were built and validated on the same held-out 20% sample. All four rank risk well.
+The recommendation is to <b>deploy the WOE/IV credit scorecard for applicant-facing decisions</b> and retain XGBoost as a
+challenger and portfolio-monitoring tool. Three things need to be flagged before anything goes live:</p>
+<ul style="margin-bottom:0;">
+<li>The transparency premium is <b>real, not trivial</b> &mdash; the scorecard gives up 0.059 of ROC-AUC (Gini 0.793 vs 0.911) to XGBoost.</li>
+<li><b>No model here is calibrated.</b> All four are fitted with balanced class weights, so predicted probabilities run roughly
+2&ndash;3&times; above observed default rates. They are usable for ranking and cut-offs, not for expected-loss or IFRS 9 provisioning as they stand.</li>
+<li>Three scorecard variables carry near-zero weight and two of those have <b>counter-intuitive signs</b>. They should be dropped before sign-off.</li>
+</ul>
+</div>
+
+<h2>1. Purpose</h2>
+<p>This model estimates the Probability of Default (PD) for loan applicants, using historical loan data to identify which
+applicant and loan characteristics are associated with higher default risk. The intended uses are (a) an application
+decision rule with an explainable score, (b) risk-based segmentation of the existing book, and (c) a monitoring baseline
+against which future applicant populations can be compared.</p>
+<p>Four modelling approaches were compared: a points-based credit scorecard built on Weight of Evidence / Information Value
+(WOE/IV) methodology, and three benchmark machine-learning models &mdash; Logistic Regression, Random Forest and XGBoost.</p>
+
+<h2>2. The Data</h2>
+<p>The development sample is <b>58,645 historical loan applications</b> with 12 predictive attributes and a binary default
+outcome. There are <b>no missing values and no duplicate rows</b>. A further 39,098 applications form a scoring (test) set
+with no outcome labels, used for population-stability testing.</p>
+
+<table class="nobreak">
+<tr><th>Portfolio characteristic</th><th class="n">Value</th><th>Note</th></tr>
+<tr><td>Applications</td><td class="n">58,645</td><td>Development sample</td></tr>
+<tr><td>Defaults</td><td class="n">8,350</td><td>14.24% of the book</td></tr>
+<tr><td>Non-defaults</td><td class="n">50,295</td><td>85.76%</td></tr>
+<tr><td>Total principal advanced</td><td class="n">$540,563,602</td><td>Sum of loan amounts</td></tr>
+<tr class="hl"><td>Principal on defaulted loans</td><td class="n">$93,497,220</td><td>17.3% of principal &mdash; ahead of the 14.24% unit rate</td></tr>
+<tr><td>Average loan &mdash; defaulted</td><td class="n">$11,197</td><td rowspan="2">Defaulters borrow ~26% more than non-defaulters</td></tr>
+<tr><td>Average loan &mdash; performing</td><td class="n">$8,889</td></tr>
+<tr><td>Loan size range</td><td class="n">$500 &ndash; $35,000</td><td>Mean $9,218</td></tr>
+<tr><td>Applicant income (median)</td><td class="n">$58,000</td><td>Range $4,200 &ndash; $1,900,000</td></tr>
+<tr><td>Applicant age (median)</td><td class="n">26</td><td>Range 20 &ndash; 84; a young book</td></tr>
+</table>
+
+<p><b>Read-across:</b> defaulted loans account for 17.3% of principal but only 14.24% of accounts. Loss severity therefore
+runs ahead of loss frequency &mdash; larger loans default more often. Any cut-off policy built on this model should be
+evaluated on dollars at risk, not just on the count of applications declined.</p>
+
+<figure>
+<img src="../Pics/loan_status_distribution.png" style="max-width:62%">
+<figcaption><b>Figure 1 &mdash; Loan status distribution.</b> 50,295 performing (0) against 8,350 defaulted (1). The roughly
+86/14 imbalance is the single most important fact for how these models are trained and, as Section 4 shows, for how their
+accuracy figures should be read.</figcaption>
+</figure>
+
+<figure>
+<img src="../Pics/Interest rate vs laon status.png">
+<figcaption><b>Figure 2 &mdash; Distribution of the numeric attributes.</b> Income is severely right-skewed (a handful of
+applicants above $1M compress the visible mass), age clusters in the early-to-mid twenties, and loan amount shows sharp
+spikes at round numbers &mdash; $5,000, $10,000, $15,000 &mdash; consistent with applicants requesting headline figures rather
+than precisely costed amounts. The skew in income and loan-to-income is the reason the scorecard bins these variables into
+quantile groups rather than using them raw.</figcaption>
+</figure>
+
+<h3>2.1 Data quality</h3>
+<p>Three records carried sentinel values of <code>123</code>: one in <code>person_age</code> and two in
+<code>person_emp_length</code> (i.e. 123 years old, 123 years of employment). These were corrected by median imputation,
+with the medians computed on the training data and the same values applied to the test set to avoid leakage. The scoring
+set contained no such values. After cleaning, no record shows employment length greater than or equal to the applicant's age.</p>
+<p class="small">Note: the original draft recorded this as "two erroneous data entries". The accurate count is three records
+across two fields. The correction is immaterial to any result but is stated here for the audit trail.</p>
+
+<h2 class="pb">3. What Drives Default Risk</h2>
+<p>Information Value (IV) measures how much each attribute separates defaulters from non-defaulters. The conventional
+reading is: below 0.02 useless, 0.02&ndash;0.1 weak, 0.1&ndash;0.3 medium, 0.3&ndash;0.5 strong, above 0.5 suspiciously strong
+and worth checking for leakage.</p>
+
+<table class="nobreak">
+<tr><th>Rank</th><th>Attribute</th><th class="n">Information Value</th><th>Strength</th></tr>
+<tr class="hl"><td>1</td><td>Loan grade</td><td class="n">1.2409</td><td>Very strong</td></tr>
+<tr class="hl"><td>2</td><td>Loan interest rate</td><td class="n">0.9272</td><td>Very strong</td></tr>
+<tr class="hl"><td>3</td><td>Loan as % of income</td><td class="n">0.7705</td><td>Very strong</td></tr>
+<tr><td>4</td><td>Home ownership</td><td class="n">0.6009</td><td>Strong</td></tr>
+<tr><td>5</td><td>Applicant income</td><td class="n">0.4981</td><td>Strong</td></tr>
+<tr><td>6</td><td>Prior default on file</td><td class="n">0.2258</td><td>Medium</td></tr>
+<tr><td>7</td><td>Employment length</td><td class="n">0.1140</td><td>Medium</td></tr>
+<tr><td>8</td><td>Loan intent</td><td class="n">0.0951</td><td>Weak</td></tr>
+<tr><td>9</td><td>Applicant age</td><td class="n">0.0037</td><td>No predictive value</td></tr>
+<tr><td>10</td><td>Credit history length</td><td class="n">0.0036</td><td>No predictive value</td></tr>
+</table>
+
+
+
+<h3>3.1 Loan grade is the dominant signal</h3>
+<table class="nobreak">
+<tr><th>Grade</th><th class="n">Loans</th><th class="n">% of book</th><th class="n">Defaults</th><th class="n">% of all defaults</th><th class="n">Default rate</th></tr>
+<tr><td>A</td><td class="n">20,984</td><td class="n">35.8%</td><td class="n">1,032</td><td class="n">12.4%</td><td class="n">4.9%</td></tr>
+<tr><td>B</td><td class="n">20,400</td><td class="n">34.8%</td><td class="n">2,087</td><td class="n">25.0%</td><td class="n">10.2%</td></tr>
+<tr><td>C</td><td class="n">11,036</td><td class="n">18.8%</td><td class="n">1,494</td><td class="n">17.9%</td><td class="n">13.5%</td></tr>
+<tr class="hl"><td>D</td><td class="n">5,034</td><td class="n">8.6%</td><td class="n">2,988</td><td class="n">35.8%</td><td class="n">59.4%</td></tr>
+<tr class="hl"><td>E</td><td class="n">1,009</td><td class="n">1.7%</td><td class="n">631</td><td class="n">7.6%</td><td class="n">62.5%</td></tr>
+<tr class="hl"><td>F</td><td class="n">149</td><td class="n">0.3%</td><td class="n">91</td><td class="n">1.1%</td><td class="n">61.1%</td></tr>
+<tr class="hl"><td>G</td><td class="n">33</td><td class="n">0.1%</td><td class="n">27</td><td class="n">0.3%</td><td class="n">81.8%</td></tr>
+<tr class="tot"><td>All</td><td class="n">58,645</td><td class="n">100%</td><td class="n">8,350</td><td class="n">100%</td><td class="n">14.24%</td></tr>
+</table>
+
+<p>The headline in the original draft &mdash; Grade A at 4.9% against Grade G at 81.8% &mdash; is correct but understates the
+more useful finding. The risk does not climb smoothly across grades. It <b>steps</b>: A&nbsp;4.9% &rarr; B&nbsp;10.2% &rarr;
+C&nbsp;13.5%, and then jumps to D&nbsp;59.4%. Grades D through G behave as a single high-risk pool at roughly 60&ndash;80%,
+while A through C form a low-risk pool under 14%.</p>
+<p><b>Concentration:</b> grades D&ndash;G are <b>10.6% of the book but 44.8% of all defaults</b>, at a blended 60.0% default
+rate. Grades A&ndash;B are 70.6% of the book and 37.4% of defaults at a 7.5% rate. Practically, the C/D boundary is where
+the portfolio's risk actually lives, and that is where cut-off policy should be argued.</p>
+
+<h3>3.2 Home ownership is the second-strongest signal</h3>
+<table class="nobreak">
+<tr><th>Home ownership</th><th class="n">Loans</th><th class="n">% of book</th><th class="n">% of all defaults</th><th class="n">Default rate</th></tr>
+<tr class="hl"><td>Rent</td><td class="n">30,594</td><td class="n">52.2%</td><td class="n">81.5%</td><td class="n">22.3%</td></tr>
+<tr><td>Other</td><td class="n">89</td><td class="n">0.2%</td><td class="n">0.2%</td><td class="n">16.9%</td></tr>
+<tr><td>Mortgage</td><td class="n">24,824</td><td class="n">42.3%</td><td class="n">17.8%</td><td class="n">6.0%</td></tr>
+<tr class="hl2"><td>Own outright</td><td class="n">3,138</td><td class="n">5.4%</td><td class="n">0.5%</td><td class="n">1.4%</td></tr>
+</table>
+<p>Renters are 52.2% of the book but carry <b>81.5% of every default in the portfolio</b>. Owners &mdash; 5.4% of the book
+&mdash; account for 0.5%. A 16&times; spread in default rate between renters and outright owners is doing a lot of work here,
+and it is almost certainly acting as a proxy for accumulated wealth and housing-cost stability rather than for anything
+causal about tenure. That is worth stating plainly because it has fair-lending implications (see Section 7).</p>
+
+<h3>3.3 Affordability: the 30% cliff</h3>
+<p>This is the finding I would most want to put in front of underwriting, and it is not in the original draft. Loan-to-income
+does not degrade gradually &mdash; it breaks.</p>
+<table class="nobreak">
+<tr><th>Loan as % of income</th><th class="n">Loans</th><th class="n">% of book</th><th class="n">Default rate</th></tr>
+<tr><td>Under 10%</td><td class="n">19,405</td><td class="n">33.1%</td><td class="n">6.7%</td></tr>
+<tr><td>10 &ndash; 20%</td><td class="n">23,767</td><td class="n">40.5%</td><td class="n">9.2%</td></tr>
+<tr><td>20 &ndash; 30%</td><td class="n">10,743</td><td class="n">18.3%</td><td class="n">14.7%</td></tr>
+<tr class="hl"><td>30 &ndash; 40%</td><td class="n">3,844</td><td class="n">6.6%</td><td class="n">68.2%</td></tr>
+<tr class="hl"><td>40% and above</td><td class="n">886</td><td class="n">1.5%</td><td class="n">76.2%</td></tr>
+</table>
+<p>Default risk runs 6.7% &rarr; 9.2% &rarr; 14.7% and then leaps to <b>68.2%</b> the moment the loan passes 30% of income.
+That is a 4.6&times; step across a single band boundary. The same shape appears in interest rate &mdash; 14.0% default below
+a 14% rate, 43.8% above it &mdash; and in loan grade at the C/D boundary.</p>
+
+
+<figure>
+<img src="../Pics/boxplots_vs_status.png">
+<figcaption><b>Figure 3 &mdash; Attribute distributions, defaulted (1) against performing (0).</b> Interest rate and
+loan-to-income separate the two groups cleanly: defaulters sit at a median rate of ~13.9% against ~10.4%, and at ~25% of
+income against ~13%. Income separates in the expected direction (median ~$44k defaulted against ~$60k performing). Age,
+by contrast, shows <b>two essentially identical boxes</b> &mdash; matching its IV of 0.0037 and confirming it carries no
+standalone predictive signal in this population.</figcaption>
+</figure>
+
+<figure>
+<img src="../Pics/correlation_heatmap.png">
+<figcaption><b>Figure 4 &mdash; Correlation between the numeric attributes and default status.</b> Two things to note.
+First, the strongest linear relationships with default are loan-to-income (0.38) and interest rate (0.34) &mdash; modest
+coefficients that considerably understate their real power, because as Figure 3 and the 30% cliff show, the relationships
+are <b>threshold-shaped rather than linear</b>. This is precisely why WOE binning outperforms raw linear terms here.
+Second, age and credit-history length are correlated at <b>0.88</b> with each other and at 0.00 with default &mdash; they are
+redundant with one another <i>and</i> uninformative, and both should be dropped.</figcaption>
+</figure>
+
+<h3>3.4 The bureau default flag adds nothing once grade is known</h3>
+<p>On its own, a prior default on file looks informative: 29.9% default rate against 11.5% for clean files, IV 0.2258.
+Cross-tabulated against grade, it collapses.</p>
+<table class="nobreak">
+<tr><th>Grade</th><th class="n">No prior default &mdash; loans</th><th class="n">rate</th><th class="n">Prior default &mdash; loans</th><th class="n">rate</th><th>Difference</th></tr>
+<tr><td>A</td><td class="n">20,980</td><td class="n">4.9%</td><td class="n">4</td><td class="n">0.0%</td><td>no population</td></tr>
+<tr><td>B</td><td class="n">20,394</td><td class="n">10.2%</td><td class="n">6</td><td class="n">0.0%</td><td>no population</td></tr>
+<tr><td>C</td><td class="n">5,523</td><td class="n">14.0%</td><td class="n">5,513</td><td class="n">13.1%</td><td>none</td></tr>
+<tr><td>D</td><td class="n">2,461</td><td class="n">60.6%</td><td class="n">2,573</td><td class="n">58.2%</td><td>none</td></tr>
+<tr><td>E</td><td class="n">502</td><td class="n">63.1%</td><td class="n">507</td><td class="n">61.9%</td><td>none</td></tr>
+<tr><td>F</td><td class="n">68</td><td class="n">55.9%</td><td class="n">81</td><td class="n">65.4%</td><td>small sample</td></tr>
+<tr><td>G</td><td class="n">15</td><td class="n">80.0%</td><td class="n">18</td><td class="n">83.3%</td><td>small sample</td></tr>
+</table>
+<p>Within grades C, D and E &mdash; the only grades with meaningful numbers on both sides &mdash; applicants with a prior
+default actually perform <i>marginally better</i> than those without. Grades A and B contain 10 flagged applicants between
+them out of 41,384. The flag's apparent power is entirely an artefact of its correlation with grade: it is a grade proxy,
+not independent information. The scorecard's fitting process reaches the same conclusion on its own, assigning it a
+coefficient of 0.0304 &mdash; effectively zero.</p>
+
+<h2 class="pb">4. Model Performance</h2>
+<p>All four models were validated on the same stratified held-out 20% sample (11,729 applications, 1,670 actual defaults,
+14.24% default rate &mdash; identical to the full book). The scorecard was re-fitted for this comparison with its WOE bins
+derived from the training portion only, so that no model sees the validation data during fitting.</p>
+
+<table class="nobreak">
+<tr><th>Model</th><th class="n">Accuracy</th><th class="n">Precision</th><th class="n">Recall</th><th class="n">F1</th><th class="n">ROC-AUC</th><th class="n">Gini</th><th class="n">KS</th><th class="n">Brier</th></tr>
+<tr class="hl"><td>&ldquo;Approve everyone&rdquo; baseline</td><td class="n">85.76%</td><td class="n">&ndash;</td><td class="n">0.0%</td><td class="n">&ndash;</td><td class="n">0.500</td><td class="n">0.000</td><td class="n">0.000</td><td class="n">&ndash;</td></tr>
+<tr><td>Credit Scorecard (WOE/IV)</td><td class="n">83.14%</td><td class="n">44.98%</td><td class="n">82.63%</td><td class="n">0.583</td><td class="n">0.8966</td><td class="n">0.793</td><td class="n">0.670</td><td class="n">0.126</td></tr>
+<tr><td>Logistic Regression</td><td class="n">84.50%</td><td class="n">47.48%</td><td class="n">83.41%</td><td class="n">0.605</td><td class="n">0.9068</td><td class="n">0.814</td><td class="n">0.692</td><td class="n">0.116</td></tr>
+<tr><td>Random Forest</td><td class="n">94.47%</td><td class="n">85.33%</td><td class="n">73.83%</td><td class="n">0.792</td><td class="n">0.9363</td><td class="n">0.873</td><td class="n">0.731</td><td class="n">0.044</td></tr>
+<tr class="hl2"><td><b>XGBoost</b></td><td class="n">92.70%</td><td class="n">70.47%</td><td class="n">83.89%</td><td class="n">0.766</td><td class="n"><b>0.9554</b></td><td class="n"><b>0.911</b></td><td class="n"><b>0.785</b></td><td class="n">0.058</td></tr>
+</table>
+
+<div class="box warn"><h3>Accuracy is the wrong headline metric here &mdash; read AUC instead</h3>
+<p style="margin-bottom:0;">On a 14.24% default rate, a model that simply approves every applicant scores <b>85.76% accuracy</b>.
+That beats both the Logistic Regression (84.50%) and the scorecard (83.14%) &mdash; despite catching precisely zero defaults
+and having no predictive content whatsoever. The reason those two models score below the do-nothing baseline is that both
+are fitted with balanced class weights, which deliberately trades false positives for catching more defaults: the scorecard
+declines ~26% of applicants to capture 82.6% of defaults. That is usually the right trade for a lender, but it shows up as
+worse "accuracy". <b>ROC-AUC, Gini and KS are the metrics to judge these models on</b>, since they measure ranking quality
+independent of where the approve/decline threshold is set.</p></div>
+
+<h3>4.1 Logistic Regression &mdash; accuracy 84.50%, ROC-AUC 0.9068</h3>
+<figure>
+<img src="../Pics/logreg_confusion_matrix.png" style="max-width:52%">
+<figcaption><b>Figure 5 &mdash; Logistic Regression confusion matrix</b> (validation set, n=11,729). Catches 1,393 of 1,670
+defaults (83.4% recall) and misses 277. The cost is 1,541 false alarms &mdash; good applicants wrongly flagged &mdash; which
+is why precision is only 47.5%: fewer than half of everyone it flags actually defaults. As a screening filter that is
+defensible; as an auto-decline rule it would reject too much good business.</figcaption>
+</figure>
+
+<h3>4.2 Random Forest &mdash; accuracy 94.47%, F1 0.792, ROC-AUC 0.9363</h3>
+<figure>
+<img src="../Pics/rf_confusion_and_importance.png">
+<figcaption><b>Figure 6 &mdash; Random Forest confusion matrix and top 10 feature importances.</b> The most conservative of
+the four: only 212 false alarms, giving the highest precision (85.3%). But it misses <b>437 defaults</b> &mdash; 60% more
+than XGBoost misses &mdash; for a recall of just 73.8%. Its importance ranking is led by loan-to-income (0.209), interest
+rate (0.174) and income (0.133), consistent with the IV ranking in Section 3.</figcaption>
+</figure>
+
+<h3>4.3 XGBoost &mdash; accuracy 92.70%, F1 0.766, ROC-AUC 0.9554</h3>
+<figure>
+<img src="../Pics/xgb_confusion_and_importance.png">
+<figcaption><b>Figure 7 &mdash; XGBoost confusion matrix and top 10 feature importances.</b> The strongest ranker of the four
+(AUC 0.9554, KS 0.785). It catches 1,401 of 1,670 defaults (83.9% recall) while raising 587 false alarms &mdash; a materially
+better trade than Logistic Regression, which achieves the same recall with 1,541 false alarms. Note that its importance
+ranking spreads across categorical splits (grade C, grade D, RENT, OWN, and four loan-intent categories), which makes any
+single feature's contribution harder to explain to an applicant than the scorecard's fixed point values.</figcaption>
+</figure>
+
+<h3>4.4 Random Forest vs XGBoost &mdash; the choice is about which error costs more</h3>
+<p>Random Forest has the higher accuracy (94.47% vs 92.70%), but that comparison favours the wrong model for lending.
+Set against each other on the same 11,729 applications:</p>
+<table class="nobreak">
+<tr><th>&nbsp;</th><th class="n">Random Forest</th><th class="n">XGBoost</th><th>Implication</th></tr>
+<tr><td>Defaults caught</td><td class="n">1,233</td><td class="n">1,401</td><td>XGBoost catches 168 more</td></tr>
+<tr class="hl"><td>Defaults missed</td><td class="n">437</td><td class="n">269</td><td>Each one is a full credit loss</td></tr>
+<tr><td>Good applicants wrongly flagged</td><td class="n">212</td><td class="n">587</td><td>Each one is forgone margin</td></tr>
+<tr><td>ROC-AUC</td><td class="n">0.9363</td><td class="n">0.9554</td><td>XGBoost ranks better overall</td></tr>
+</table>
+<p>XGBoost converts 375 additional false alarms into 168 additional defaults caught. At an average defaulted loan of
+$11,197 against the margin forgone on a declined good applicant, that trade is comfortably positive for almost any plausible
+loss-given-default assumption. <b>Random Forest's accuracy advantage comes from being too permissive on the class that
+actually costs money.</b></p>
+
+<h3>4.5 Credit Scorecard (WOE/IV points-based model)</h3>
+<p>The scorecard scales to a base of 600 points with 20 points to double the odds &mdash; standard scaling conventions.
+Observed scores on the validation set run from <b>424 to 763</b>, median 640. Every point value is traceable to a single
+attribute band, which is what makes the model explainable to an applicant or a regulator.</p>
+
+<table class="nobreak">
+<tr><th>Attribute</th><th>Band</th><th class="n">Points</th><th>Attribute</th><th>Band</th><th class="n">Points</th></tr>
+<tr><td rowspan="4">Home ownership</td><td>Own outright</td><td class="n">+50.9</td><td rowspan="7">Loan grade</td><td>A</td><td class="n">+34.2</td></tr>
+<tr><td>Mortgage</td><td class="n">+19.8</td><td>B</td><td class="n">+11.0</td></tr>
+<tr><td>Other</td><td class="n">&minus;4.6</td><td>C</td><td class="n">+1.7</td></tr>
+<tr><td>Rent</td><td class="n">&minus;11.2</td><td>D</td><td class="n">&minus;63.9</td></tr>
+<tr><td rowspan="5">Loan as % of income</td><td>Up to 8%</td><td class="n">+25.4</td><td>E</td><td class="n">&minus;67.8</td></tr>
+<tr><td>8 &ndash; 12%</td><td class="n">+21.1</td><td>F</td><td class="n">&minus;65.9</td></tr>
+<tr><td>12 &ndash; 17%</td><td class="n">+15.5</td><td>G</td><td class="n">&minus;95.1</td></tr>
+<tr><td>17 &ndash; 23%</td><td class="n">+6.2</td><td rowspan="2">Income</td><td>Above $83,119</td><td class="n">+23.9</td></tr>
+<tr><td>Above 23%</td><td class="n">&minus;38.5</td><td>Below $39,480</td><td class="n">&minus;18.0</td></tr>
+</table>
+
+<div class="box good"><h3>Worked example &mdash; what the applicant is actually told</h3>
+<p style="margin-bottom:5px;">Base score <b>603</b> for every applicant, then add or subtract the bands that apply.</p>
+<p style="margin-bottom:5px;"><b>Applicant A:</b> Grade A (+34.2), owns outright (+50.9), income $95k (+23.9), borrowing 6%
+of income (+25.4), rate 7.0% (+5.6), 8 years employed (+2.6), venture purpose (+16.6), age 29 (+0.5), clean file (&minus;0.2)
+&nbsp;&rarr;&nbsp; <b>score 762</b>, top band, observed default rate <b>1.67%</b>.</p>
+<p style="margin-bottom:0;"><b>Applicant B:</b> Grade D (&minus;63.9), renting (&minus;11.2), income $35k (&minus;18.0),
+borrowing 30% of income (&minus;38.5), rate 15.0% (&minus;6.0), 6 months employed (&minus;2.4), debt consolidation
+(&minus;11.7), age 22 (&minus;0.4), prior default (+0.8) &nbsp;&rarr;&nbsp; <b>score 451</b>, bottom band, observed default
+rate <b>90.16%</b>. The decline letter writes itself: grade, affordability and tenure account for &minus;114 of the
+&minus;152 point gap.</p></div>
+
+<div class="box warn"><h3>Defect to fix before sign-off</h3>
+<p style="margin-bottom:0;">Two scorecard variables carry the <b>wrong sign</b>. Prior default on file scores <b>+0.8 points
+for having defaulted before</b> and &minus;0.2 for a clean file; credit history length is similarly inverted. Both are
+numerically trivial (under one point, against a 339-point observed score range) because the fitting correctly drove their
+coefficients towards zero &mdash; for the reason shown in Section 3.4 &mdash; so no live decision would turn on them. But a
+model reviewer or regulator will flag a scorecard that rewards a prior default, and they would be right to. <b>Recommendation:
+drop applicant age, credit history length and prior default on file from the scorecard entirely.</b> Their combined IV is
+0.23, almost all of it redundant with loan grade, and removing them eliminates the sign problem at no measurable cost to
+performance.</p></div>
+
+<h2 class="pb">5. Model Validation</h2>
+
+<h3>5.1 Population Stability Index &mdash; PSI = 0.0008</h3>
+<p>PSI compares the score distribution the model was trained on against the distribution it is now being applied to.
+The standard reading is: below 0.10 no meaningful shift, 0.10&ndash;0.25 moderate shift worth investigating, above 0.25
+significant shift and the model should be reviewed for retraining.</p>
+<figure>
+<img src="../Pics/psi_distribution.png">
+<figcaption><b>Figure 8 &mdash; Population stability, training set against scoring set.</b> At <b>PSI = 0.0008</b>, the two
+populations are effectively indistinguishable &mdash; roughly 300&times; below the 0.25 action threshold, and the largest
+single-bucket contribution is 0.0003. The 39,098 applications in the scoring set are drawn from the same population the
+model learned on, so the model can be applied to them without adjustment.</figcaption>
+</figure>
+<p><b>Caveat on how much comfort to take from this.</b> Train and test here are two random splits of one historical
+extract, not two periods of time. A PSI this low confirms the split was clean; it says nothing about how the applicant
+population will drift over the coming quarters. The real stability test is PSI measured month-on-month against live
+applications once the model is deployed, and that monitoring should be stood up from day one.</p>
+
+<h3>5.2 Calibration &mdash; the models rank well but the probabilities are wrong</h3>
+<figure>
+<img src="../Pics/calibration_curve.png" style="max-width:56%">
+<figcaption><b>Figure 9 &mdash; Calibration curve, XGBoost on the validation set.</b> A perfectly calibrated model tracks the
+dashed diagonal. This one sits <b>consistently below it</b> across the entire mid-range, meaning predicted probabilities
+systematically overstate the real default rate.</figcaption>
+</figure>
+<table class="nobreak">
+<tr><th class="n">Predicted PD</th><th class="n">Actual default rate</th><th class="n">Gap</th><th>Reading</th></tr>
+<tr><td class="n">0.035</td><td class="n">0.009</td><td class="n">+0.026</td><td>~4&times; over</td></tr>
+<tr><td class="n">0.145</td><td class="n">0.031</td><td class="n">+0.114</td><td>~4.7&times; over</td></tr>
+<tr><td class="n">0.247</td><td class="n">0.062</td><td class="n">+0.185</td><td>~4&times; over</td></tr>
+<tr><td class="n">0.346</td><td class="n">0.100</td><td class="n">+0.246</td><td>~3.5&times; over</td></tr>
+<tr class="hl"><td class="n">0.448</td><td class="n">0.145</td><td class="n">+0.304</td><td>~3&times; over</td></tr>
+<tr class="hl"><td class="n">0.547</td><td class="n">0.214</td><td class="n">+0.333</td><td>largest absolute gap</td></tr>
+<tr class="hl"><td class="n">0.649</td><td class="n">0.292</td><td class="n">+0.357</td><td>largest absolute gap</td></tr>
+<tr class="hl"><td class="n">0.745</td><td class="n">0.380</td><td class="n">+0.365</td><td>largest absolute gap</td></tr>
+<tr><td class="n">0.855</td><td class="n">0.608</td><td class="n">+0.246</td><td>~1.4&times; over</td></tr>
+<tr><td class="n">0.982</td><td class="n">0.943</td><td class="n">+0.039</td><td>close</td></tr>
+</table>
+<p><b>This is the most consequential finding in the validation section.</b> An applicant scored at a 0.55 probability of
+default actually defaults 21% of the time. The cause is not a modelling error &mdash; it is the deliberate use of
+<code>scale_pos_weight</code> and <code>class_weight="balanced"</code>, which re-weight the minority class during fitting and
+inflate every predicted probability as a side effect. The same distortion applies to all four models; the Brier scores in
+Section 4 (0.126 for the scorecard, 0.116 for Logistic Regression) reflect it.</p>
+<p><b>What this means in practice:</b> these outputs are <b>ranking scores, not probabilities</b>. They are valid for ordering
+applicants, setting cut-offs and building risk bands &mdash; all of which Section 5.3 does. They are <b>not</b> valid as PD
+inputs to expected-loss calculations, IFRS 9 / CECL provisioning, risk-based pricing, or capital models, where an
+over-statement of 3&times; would be material. Before any such use, the model needs recalibration &mdash; isotonic regression
+or Platt scaling fitted on a held-out sample is the standard remedy and is a small piece of work.</p>
+
+<h3>5.3 Risk bands and cut-off analysis</h3>
+<p>The scorecard's practical value is that it sorts the book into bands whose observed default rates are far apart.
+On the validation set:</p>
+<table class="nobreak">
+<tr><th>Score band</th><th class="n">Applicants</th><th class="n">% of portfolio</th><th class="n">Defaults</th><th class="n">Observed default rate</th></tr>
+<tr class="hl"><td>Below 500 &mdash; high risk</td><td class="n">244</td><td class="n">2.1%</td><td class="n">220</td><td class="n">90.16%</td></tr>
+<tr class="hl"><td>500 &ndash; 550</td><td class="n">804</td><td class="n">6.9%</td><td class="n">524</td><td class="n">65.17%</td></tr>
+<tr><td>550 &ndash; 600</td><td class="n">1,902</td><td class="n">16.2%</td><td class="n">630</td><td class="n">33.12%</td></tr>
+<tr class="hl2"><td>600 &ndash; 650</td><td class="n">3,918</td><td class="n">33.4%</td><td class="n">215</td><td class="n">5.49%</td></tr>
+<tr class="hl2"><td>650 and above &mdash; low risk</td><td class="n">4,861</td><td class="n">41.4%</td><td class="n">81</td><td class="n">1.67%</td></tr>
+</table>
+<p>A 54&times; spread between the top and bottom bands, with 75% of the portfolio sitting in the two lowest-risk bands.
+Translating that into a decision rule:</p>
+<table class="nobreak">
+<tr><th style="white-space:nowrap">Cut-off</th><th class="n">Approval rate</th><th class="n">Default rate of approved book</th><th class="n">Defaults avoided</th><th class="n">Good loans declined</th><th class="n">Defaulting principal avoided</th></tr>
+<tr><td style="white-space:nowrap">No cut-off</td><td class="n">100.0%</td><td class="n">14.24%</td><td class="n">0</td><td class="n">0</td><td class="n">$0</td></tr>
+<tr><td>500</td><td class="n">97.9%</td><td class="n">12.63%</td><td class="n">220</td><td class="n">24</td><td class="n">$3.2M</td></tr>
+<tr><td>550</td><td class="n">91.1%</td><td class="n">8.67%</td><td class="n">744</td><td class="n">304</td><td class="n">$8.3M</td></tr>
+<tr class="hl2"><td><b>575</b></td><td class="n">84.4%</td><td class="n">5.55%</td><td class="n">1,121</td><td class="n">714</td><td class="n">$13.0M</td></tr>
+<tr class="hl2"><td><b>600</b></td><td class="n">74.8%</td><td class="n">3.37%</td><td class="n">1,374</td><td class="n">1,576</td><td class="n">$16.2M</td></tr>
+<tr><td>620</td><td class="n">63.3%</td><td class="n">2.49%</td><td class="n">1,485</td><td class="n">2,820</td><td class="n">$17.3M</td></tr>
+<tr><td>650</td><td class="n">41.4%</td><td class="n">1.67%</td><td class="n">1,589</td><td class="n">5,279</td><td class="n">$18.2M</td></tr>
+</table>
+<p><b>Recommended operating range: a cut-off between 575 and 600.</b> At 575 the lender declines 15.6% of applications,
+cuts the default rate of the approved book from 14.24% to 5.55%, avoids 67% of all defaults and $13.0M of defaulting
+principal, and turns away 714 good applicants. At 600 the default rate falls further to 3.37% but the cost of good business
+declined more than doubles to 1,576. Above 620 the curve flattens hard &mdash; each additional default avoided costs
+progressively more good customers, and by 650 the lender is declining 5,279 good applicants to avoid 215 more defaults.
+Which point in that range is right is a commercial decision about risk appetite, not a modelling one, and it should be set
+with the pricing team against actual margin and loss-given-default assumptions.</p>
+
+<h2 class="pb">6. Recommendation</h2>
+
+
+<h3>Required before production</h3>
+<ol>
+<li><b>Confirm the availability of loan grade and interest rate at scoring time</b> with underwriting. If either is assigned
+after the credit decision, both must be removed and every performance figure in this report re-measured. This is the single
+largest open risk to the results.</li>
+<li><b>Recalibrate.</b> Fit isotonic regression or Platt scaling on a held-out sample so the outputs are usable as
+probabilities, not just as ranks. Required before any provisioning, pricing or capital use.</li>
+<li><b>Drop age, credit history length and prior default on file</b> from the scorecard, resolving the wrong-sign defect.</li>
+<li><b>Run a fairness review</b> (Section 7) before the model touches a live application.</li>
+<li><b>Stand up monthly PSI and outcome monitoring</b> from the first day of deployment.</li>
+</ol>
+
+<h2>7. Limitations</h2>
+<ul>
+<li><b>Single historical snapshot.</b> The model is trained and validated on one extract, split randomly. There is no
+out-of-time validation, so nothing here demonstrates stability across economic conditions. The PSI of 0.0008 confirms the
+random split was clean; it does not evidence through-the-cycle robustness. An out-of-time holdout should be the first
+addition to this work.</li>
+
+<li><b>Possible target leakage in the two strongest predictors.</b> Loan grade (IV 1.24) and interest rate (IV 0.93) are
+lender-assigned. If they encode a risk assessment made at or after underwriting, the model is partly predicting its own
+inputs and real-world performance will fall short of the figures reported here.</li>
+<li><b>No fairness or disparate-impact testing has been performed.</b> This is the most serious outstanding gap. The dataset
+carries no protected characteristics, so none can be tested directly &mdash; but home ownership, the second-strongest
+predictor, is a well-documented proxy for wealth and is correlated with race and age in most lending populations. Renters
+receive &minus;11.2 points against +50.9 for outright owners: a 62-point swing, which at 20 points to double the odds means
+the scorecard treats a renter as roughly 8&times; the odds of default of an outright owner before any other attribute is
+considered. That needs disparate-impact testing against the lender's own applicant demographics before deployment, and a
+documented business-necessity justification if the effect is confirmed.</li>
+
+<li><b>Three corrected records.</b> One <code>person_age</code> and two <code>person_emp_length</code> values of 123 were
+median-imputed. Immaterial at this sample size, but the presence of sentinel values suggests the upstream data feed has no
+range validation, which is worth raising with data engineering.</li>
+<li><b>Young, renter-heavy population.</b> Median applicant age 26, 52.2% renting. Conclusions may not transfer to an older
+or more asset-heavy applicant base without revalidation.</li>
+</ul>
+
+
+</body></html>

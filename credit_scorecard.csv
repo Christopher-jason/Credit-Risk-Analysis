@@ -1,9 +1,9 @@
 feature,bin,woe,points
-person_age_woe,"(19.999, 23.0]",-0.07,-0.4
+person_age_woe,"(19.999, 23.0]",-0.07,-0.7
 person_age_woe,"(23.0, 25.0]",-0.012,-0.1
-person_age_woe,"(25.0, 27.0]",0.083,0.5
-person_age_woe,"(27.0, 31.0]",0.081,0.5
-person_age_woe,"(31.0, 84.0]",-0.021,-0.1
+person_age_woe,"(25.0, 27.0]",0.083,0.8
+person_age_woe,"(27.0, 31.0]",0.081,0.8
+person_age_woe,"(31.0, 84.0]",-0.021,-0.2
 person_income_woe,"(4199.999, 39480.0]",-0.964,-18.0
 person_income_woe,"(39480.0, 50000.0]",0.055,1.0
 person_income_woe,"(50000.0, 63000.0]",0.075,1.4
@@ -24,11 +24,11 @@ person_emp_length_woe,"(1.0, 3.0]",-0.167,-0.9
 person_emp_length_woe,"(3.0, 5.0]",0.202,1.1
 person_emp_length_woe,"(5.0, 7.0]",0.258,1.4
 person_emp_length_woe,"(7.0, 41.0]",0.492,2.6
-cb_person_cred_hist_length_woe,"(1.999, 3.0]",-0.046,-0.0
-cb_person_cred_hist_length_woe,"(3.0, 4.0]",-0.047,-0.0
-cb_person_cred_hist_length_woe,"(4.0, 5.0]",0.093,0.0
-cb_person_cred_hist_length_woe,"(5.0, 9.0]",0.093,0.0
-cb_person_cred_hist_length_woe,"(9.0, 30.0]",-0.005,-0.0
+cb_person_cred_hist_length_woe,"(1.999, 3.0]",-0.046,0.2
+cb_person_cred_hist_length_woe,"(3.0, 4.0]",-0.047,0.2
+cb_person_cred_hist_length_woe,"(4.0, 5.0]",0.093,-0.5
+cb_person_cred_hist_length_woe,"(5.0, 9.0]",0.093,-0.5
+cb_person_cred_hist_length_woe,"(9.0, 30.0]",-0.005,0.0
 person_home_ownership_woe,MORTGAGE,0.96,19.8
 person_home_ownership_woe,OTHER,-0.226,-4.6
 person_home_ownership_woe,OWN,2.469,50.9
@@ -42,8 +42,8 @@ loan_intent_woe,VENTURE,0.484,16.6
 loan_grade_woe,A,1.166,34.2
 loan_grade_woe,B,0.376,11.0
 loan_grade_woe,C,0.058,1.7
-loan_grade_woe,D,-2.174,-63.9
-loan_grade_woe,E,-2.307,-67.8
+loan_grade_woe,D,-2.174,-63.8
+loan_grade_woe,E,-2.307,-67.7
 loan_grade_woe,F,-2.243,-65.9
 loan_grade_woe,G,-3.238,-95.1
 cb_person_default_on_file_woe,N,0.244,-0.2
