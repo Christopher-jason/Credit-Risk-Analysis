@@ -1,0 +1,50 @@
+feature,bin,woe,points
+person_age_woe,"(19.999, 23.0]",-0.07,-0.4
+person_age_woe,"(23.0, 25.0]",-0.012,-0.1
+person_age_woe,"(25.0, 27.0]",0.083,0.5
+person_age_woe,"(27.0, 31.0]",0.081,0.5
+person_age_woe,"(31.0, 84.0]",-0.021,-0.1
+person_income_woe,"(4199.999, 39480.0]",-0.964,-18.0
+person_income_woe,"(39480.0, 50000.0]",0.055,1.0
+person_income_woe,"(50000.0, 63000.0]",0.075,1.4
+person_income_woe,"(63000.0, 83119.2]",0.46,8.6
+person_income_woe,"(83119.2, 1900000.0]",1.282,23.9
+loan_int_rate_woe,"(5.419, 7.51]",1.331,5.6
+loan_int_rate_woe,"(7.51, 9.99]",0.822,3.5
+loan_int_rate_woe,"(9.99, 11.49]",0.423,1.8
+loan_int_rate_woe,"(11.49, 13.49]",0.099,0.4
+loan_int_rate_woe,"(13.49, 23.22]",-1.42,-6.0
+loan_percent_income_woe,"(-0.001, 0.08]",0.874,25.4
+loan_percent_income_woe,"(0.08, 0.12]",0.726,21.1
+loan_percent_income_woe,"(0.12, 0.17]",0.535,15.5
+loan_percent_income_woe,"(0.17, 0.23]",0.215,6.2
+loan_percent_income_woe,"(0.23, 0.83]",-1.326,-38.5
+person_emp_length_woe,"(-0.001, 1.0]",-0.444,-2.4
+person_emp_length_woe,"(1.0, 3.0]",-0.167,-0.9
+person_emp_length_woe,"(3.0, 5.0]",0.202,1.1
+person_emp_length_woe,"(5.0, 7.0]",0.258,1.4
+person_emp_length_woe,"(7.0, 41.0]",0.492,2.6
+cb_person_cred_hist_length_woe,"(1.999, 3.0]",-0.046,-0.0
+cb_person_cred_hist_length_woe,"(3.0, 4.0]",-0.047,-0.0
+cb_person_cred_hist_length_woe,"(4.0, 5.0]",0.093,0.0
+cb_person_cred_hist_length_woe,"(5.0, 9.0]",0.093,0.0
+cb_person_cred_hist_length_woe,"(9.0, 30.0]",-0.005,-0.0
+person_home_ownership_woe,MORTGAGE,0.96,19.8
+person_home_ownership_woe,OTHER,-0.226,-4.6
+person_home_ownership_woe,OWN,2.469,50.9
+person_home_ownership_woe,RENT,-0.545,-11.2
+loan_intent_woe,DEBTCONSOLIDATION,-0.341,-11.7
+loan_intent_woe,EDUCATION,0.318,10.9
+loan_intent_woe,HOMEIMPROVEMENT,-0.237,-8.1
+loan_intent_woe,MEDICAL,-0.268,-9.2
+loan_intent_woe,PERSONAL,0.081,2.8
+loan_intent_woe,VENTURE,0.484,16.6
+loan_grade_woe,A,1.166,34.2
+loan_grade_woe,B,0.376,11.0
+loan_grade_woe,C,0.058,1.7
+loan_grade_woe,D,-2.174,-63.9
+loan_grade_woe,E,-2.307,-67.8
+loan_grade_woe,F,-2.243,-65.9
+loan_grade_woe,G,-3.238,-95.1
+cb_person_default_on_file_woe,N,0.244,-0.2
+cb_person_default_on_file_woe,Y,-0.943,0.8
